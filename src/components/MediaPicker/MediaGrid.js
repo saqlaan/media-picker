@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, View, Dimensions } from 'react-native';
-import ImageItem from './ImageItem';
+import ImageItem from './MediaGridImage';
 import useGallery from '../../hooks.js/useGallery';
 
 const IMAGE_SIZE = Dimensions.get('screen').width / 3;

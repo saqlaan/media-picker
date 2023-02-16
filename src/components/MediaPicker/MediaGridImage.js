@@ -4,7 +4,7 @@ import tickIcon from '../../assets/icons/check.png';
 
 const IMAGE_SIZE = Dimensions.get('screen').width / 3;
 
-function ImageItem({ node, isSelected, onSelected }) {
+function MediaGridImage({ node, isSelected, onSelected }) {
   return (
     <Pressable onPress={onSelected} style={styles.imageContainer}>
       <Image
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     height: IMAGE_SIZE,
     width: IMAGE_SIZE,
+    backgroundColor: '#1a1a1a',
   },
   imageStyle: {
     aspectRatio: 1,
@@ -53,4 +54,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ImageItem;
+export default MediaGridImage;
