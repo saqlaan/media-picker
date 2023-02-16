@@ -21,7 +21,7 @@ function useGallery() {
   const loadImages = () => {
     console.log('Loadiamges');
     CameraRoll.getPhotos({
-      first: 15,
+      first: 20,
       groupTypes: 'All',
       assetType: 'Photos',
       after: pagination?.endCursor,

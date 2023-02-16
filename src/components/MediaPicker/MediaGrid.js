@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, View, Dimensions } from 'react-native';
 import ImageItem from './MediaGridImage';
 import useGallery from '../../hooks.js/useGallery';
+import MediaPickerCamera from './MediaPickerCamera';
 
 const IMAGE_SIZE = Dimensions.get('screen').width / 3;
 
@@ -37,7 +38,9 @@ function MediaGrid() {
 
   const renderheader = () => (
     <View style={styles.headerStyle}>
-      <View style={styles.cameraContainer} />
+      <View style={styles.cameraContainer}>
+        <MediaPickerCamera />
+      </View>
       <View style={styles.headerImagesRow}>
         {photos.slice(0, 4).map(item => (
           <ImageItem
@@ -70,7 +73,7 @@ function MediaGrid() {
       numColumns={3}
       horizontal={false}
       ListHeaderComponent={renderheader()}
-      initialNumToRender={12}
+      initialNumToRender={20}
       onEndReached={_onEndReached}
       refreshControl={false}
       pinchGestureEnabled={false}
