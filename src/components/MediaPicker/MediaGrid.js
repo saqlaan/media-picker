@@ -8,9 +8,9 @@ import {
   Pressable,
 } from 'react-native';
 import ImageItem from './MediaGridImage';
-import useGallery from '../../hooks.js/useGallery';
+import useGallery from '../../hooks/useGallery';
 import MediaPickerCamera from './MediaPickerCamera';
-import useGalleryPermissions from '../../hooks.js/useGalleryPermissions';
+import useGalleryPermissions from '../../hooks/useGalleryPermissions';
 
 const IMAGE_SIZE = Dimensions.get('screen').width / 3;
 
@@ -103,6 +103,7 @@ function MediaGrid() {
       pinchGestureEnabled={false}
       scrollToOverflowEnabled={false}
       ListEmptyComponent={_emptyComponent()}
+      removeClippedSubviews={true}
     />
   );
 }
@@ -112,7 +113,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#1a1a1a',
   },
   headerStyle: {
-    flex: 1,
     flexDirection: 'row',
   },
   cameraContainer: {
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   headerImagesRow: {
     flexDirection: 'row',
-    flexWrap: 1,
+    flexWrap: 'wrap',
     width: IMAGE_SIZE * 2,
   },
   errorContainer: {

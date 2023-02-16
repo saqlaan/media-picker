@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Camera } from 'react-native-vision-camera';
 import cameraIcon from '../../assets/icons/camera.png';
-import useCameraPermissions from '../../hooks.js/useCameraPermissions';
+import useCameraPermissions from '../../hooks/useCameraPermissions';
 
 function MediaPickerCamera() {
   const { device, hasPermission, requestPermission } = useCameraPermissions();

@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   container: {
-    backgroundColor: 'white',
+    backgroundColor: '#000',
     height: '70%',
   },
   gridWrapper: {

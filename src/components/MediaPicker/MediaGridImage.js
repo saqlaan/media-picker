@@ -1,16 +1,21 @@
 import React from 'react';
 import { StyleSheet, View, Image, Dimensions, Pressable } from 'react-native';
 import tickIcon from '../../assets/icons/check.png';
+import { isAndroid } from '../../utils.js/functions';
 
 const IMAGE_SIZE = Dimensions.get('screen').width / 3;
 
 function MediaGridImage({ node, isSelected, onSelected }) {
   return (
     <Pressable onPress={onSelected} style={styles.imageContainer}>
-      <Image
-        style={styles.imageStyle}
-        source={{ uri: `${node.image.uri}.${node.extension}` }}
-      />
+      {isAndroid ? (
+        <Image style={styles.imageStyle} source={{ uri: node.image.uri }} />
+      ) : (
+        <Image
+          style={styles.imageStyle}
+          source={{ uri: `${node.image.uri}.${node.extension}` }}
+        />
+      )}
       {isSelected ? (
         <Image
           style={styles.selectedImage}

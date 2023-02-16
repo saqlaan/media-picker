@@ -1,6 +1,7 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useEffect, useState } from 'react';
 import useGalleryPermissions from './useGalleryPermissions';
+import { isAndroid } from '../utils.js/functions';
 
 const supportedMimeTypesByTheBackEnd = [
   'image/jpeg',
@@ -29,6 +30,7 @@ function useGallery() {
       assetType: 'Photos',
       after: pagination?.endCursor,
       mimeTypes: supportedMimeTypesByTheBackEnd,
+      ...(isAndroid && { include: ['fileSize', 'filename'] }),
     })
       .then(result => {
         setphotos(prev => [...prev, ...result.edges]);
