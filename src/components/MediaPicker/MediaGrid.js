@@ -5,7 +5,7 @@ import useGallery from '../../hooks.js/useGallery';
 
 const IMAGE_SIZE = Dimensions.get('screen').width / 3;
 
-function MediaGrid({}) {
+function MediaGrid() {
   const { photos, hasNextPage, loadImages } = useGallery();
   const [selectedPhotos, setSelectedPhotos] = useState([]);
 
@@ -25,10 +25,10 @@ function MediaGrid({}) {
         );
         setSelectedPhotos(updatedSelectedPhotos);
       } else {
-        setSelectedPhotos(selectedPhotos => [...selectedPhotos, photo]);
+        setSelectedPhotos([...selectedPhotos, photo]);
       }
     },
-    [selectedPhotos],
+    [selectedPhotos]
   );
 
   const isPhotoSelected = photo => {
@@ -64,19 +64,25 @@ function MediaGrid({}) {
 
   return (
     <FlatList
-      style={{backgroundColor: '#1a1a1a'}}
       data={photos.slice(4)}
       key={node => node.image.filename}
       renderItem={_renderItem}
       numColumns={3}
       horizontal={false}
       ListHeaderComponent={renderheader()}
+      initialNumToRender={12}
       onEndReached={_onEndReached}
+      refreshControl={false}
+      pinchGestureEnabled={false}
+      scrollToOverflowEnabled={false}
     />
   );
 }
 
 const styles = StyleSheet.create({
+  flatListStyle: {
+    backgroundColor: '#1a1a1a',
+  },
   headerStyle: {
     flex: 1,
     flexDirection: 'row',

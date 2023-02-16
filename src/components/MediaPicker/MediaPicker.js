@@ -4,15 +4,17 @@ import RNModal from 'react-native-modal';
 import MediaPickerHeader from './MediaPickerHeader';
 import MediaGrid from './MediaGrid';
 
-function MediaPicker({ isModalVisible }) {
+function MediaPicker({ isModalVisible, closeModal }) {
   return (
     <RNModal
-      // swipeDirection={'down'}
+      swipeDirection={'down'}
+      onSwipeComplete={closeModal}
+      onBackdropPress={closeModal}
       propagateSwipe
       isVisible={isModalVisible}
       style={styles.wrapper}>
       <View style={styles.container}>
-        <MediaPickerHeader onCancel={() => console.log('Hide modal')} />
+        <MediaPickerHeader onCancel={closeModal} />
         <MediaGrid />
       </View>
     </RNModal>

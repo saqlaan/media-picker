@@ -1,17 +1,12 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { StyleSheet, View, Image, Dimensions, Pressable } from 'react-native';
 import tickIcon from '../../assets/icons/check.png';
 
 const IMAGE_SIZE = Dimensions.get('screen').width / 3;
 
 function ImageItem({ node, isSelected, onSelected }) {
-  // const handleSelection = useCallback(() => {
-    
-  //   onSelected(node);
-  // }, []);
-
   return (
-    <Pressable onPress={() => onSelected(node)} style={styles.imageContainer}>
+    <Pressable onPress={onSelected} style={styles.imageContainer}>
       <Image
         style={styles.imageStyle}
         source={{ uri: `${node.image.uri}.${node.extension}` }}

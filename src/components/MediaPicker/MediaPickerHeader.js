@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   closeModalText: {
-    color: '#0171e3',
+    color: '#447ec6',
     fontSize: 20,
   },
 });
