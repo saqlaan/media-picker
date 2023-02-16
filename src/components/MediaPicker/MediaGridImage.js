@@ -1,13 +1,22 @@
-import React from 'react';
-import { StyleSheet, View, Image, Dimensions, Pressable } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, View, Image, Pressable } from 'react-native';
 import tickIcon from '../../assets/icons/check.png';
-import { isAndroid } from '../../utils.js/functions';
+import { GRID_IMAGE_SIZE, isAndroid } from '../../utils.js/constants';
 
-const IMAGE_SIZE = Dimensions.get('screen').width / 3;
+function MediaGridImage({ node, onImageSelected, onImageUnSelected }) {
+  const [isSelected, setIsSelected] = useState(false);
 
-function MediaGridImage({ node, isSelected, onSelected }) {
+  const handleSection = useCallback(() => {
+    if (isSelected) {
+      onImageUnSelected(node);
+    } else {
+      onImageSelected(node);
+    }
+    setIsSelected(value => !value);
+  }, [isSelected]);
+
   return (
-    <Pressable onPress={onSelected} style={styles.imageContainer}>
+    <Pressable onPress={handleSection} style={styles.imageContainer}>
       {isAndroid ? (
         <Image style={styles.imageStyle} source={{ uri: node.image.uri }} />
       ) : (
@@ -33,8 +42,8 @@ function MediaGridImage({ node, isSelected, onSelected }) {
 const styles = StyleSheet.create({
   imageContainer: {
     borderWidth: 0.5,
-    height: IMAGE_SIZE,
-    width: IMAGE_SIZE,
+    height: GRID_IMAGE_SIZE,
+    width: GRID_IMAGE_SIZE,
     backgroundColor: '#1a1a1a',
   },
   imageStyle: {

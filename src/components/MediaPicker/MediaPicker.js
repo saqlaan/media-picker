@@ -12,7 +12,8 @@ function MediaPicker({ isModalVisible, closeModal }) {
       onBackdropPress={closeModal}
       propagateSwipe
       isVisible={isModalVisible}
-      style={styles.wrapper}>
+      style={styles.wrapper}
+      useNativeDriver={true}>
       <View style={styles.container}>
         <MediaPickerHeader onCancel={closeModal} />
         <MediaGrid />

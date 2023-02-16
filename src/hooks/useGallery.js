@@ -1,7 +1,7 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useEffect, useState } from 'react';
 import useGalleryPermissions from './useGalleryPermissions';
-import { isAndroid } from '../utils.js/functions';
+import { isAndroid } from '../utils.js/constants';
 
 const supportedMimeTypesByTheBackEnd = [
   'image/jpeg',

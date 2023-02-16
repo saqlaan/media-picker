@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Alert, Linking, PermissionsAndroid, Platform } from 'react-native';
+import {
+  Alert,
+  AppState,
+  Linking,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
 import { iosRequestReadWriteGalleryPermission } from '@react-native-camera-roll/camera-roll';
 
 const androidPermission =
@@ -9,6 +15,17 @@ const androidPermission =
 
 function useGalleryPermissions() {
   const [hasPermission, setHasPermission] = useState(false);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'active') {
+        checkPermissions();
+      }
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     checkPermissions();
@@ -61,8 +78,9 @@ function useGalleryPermissions() {
         })
         .catch(error => {
           setHasPermission(false);
-          console.log(error);
         });
+    } else {
+      Linking.openSettings();
     }
   };
 

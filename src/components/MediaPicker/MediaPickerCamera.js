@@ -1,11 +1,12 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { Camera } from 'react-native-vision-camera';
 import cameraIcon from '../../assets/icons/camera.png';
 import useCameraPermissions from '../../hooks/useCameraPermissions';
+import { GRID_IMAGE_SIZE } from '../../utils.js/constants';
+import { RNCamera } from 'react-native-camera';
 
 function MediaPickerCamera() {
-  const { device, hasPermission, requestPermission } = useCameraPermissions();
+  const { hasPermission, requestPermission } = useCameraPermissions();
 
   const renderWithoutCamera = () => (
     <View style={styles.errorContainer}>
@@ -15,13 +16,13 @@ function MediaPickerCamera() {
     </View>
   );
 
-  if (hasPermission && device) {
+  if (hasPermission) {
     return (
       <View style={styles.cameraContainer}>
-        <Camera
-          style={StyleSheet.absoluteFill}
-          device={device}
-          isActive={true}
+        <RNCamera
+          style={styles.cameraStyle}
+          type={RNCamera.Constants.Type.back}
+          captureAudio={false}
         />
         <Image style={styles.iconStyle} source={cameraIcon} />
       </View>
@@ -34,6 +35,10 @@ function MediaPickerCamera() {
 const styles = StyleSheet.create({
   cameraContainer: {
     flex: 1,
+  },
+  cameraStyle: {
+    width: GRID_IMAGE_SIZE,
+    height: GRID_IMAGE_SIZE * 2,
   },
   errorContainer: {
     flex: 1,

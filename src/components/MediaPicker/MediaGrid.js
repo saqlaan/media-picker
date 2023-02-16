@@ -1,18 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  Dimensions,
-  Text,
-  Pressable,
-} from 'react-native';
+import { FlatList, StyleSheet, View, Text, Pressable } from 'react-native';
 import ImageItem from './MediaGridImage';
 import useGallery from '../../hooks/useGallery';
 import MediaPickerCamera from './MediaPickerCamera';
 import useGalleryPermissions from '../../hooks/useGalleryPermissions';
-
-const IMAGE_SIZE = Dimensions.get('screen').width / 3;
+import { GRID_IMAGE_SIZE } from '../../utils.js/constants';
 
 function MediaGrid() {
   const { photos, hasNextPage, loadImages } = useGallery();
@@ -26,24 +18,22 @@ function MediaGrid() {
     loadImages();
   }, [hasNextPage, loadImages]);
 
-  const _onSelected = useCallback(
-    photo => {
-      if (isPhotoSelected(photo)) {
-        const updatedSelectedPhotos = selectedPhotos.filter(
-          selectedPhoto =>
-            selectedPhoto.image.filename !== photo.image.filename,
-        );
-        setSelectedPhotos(updatedSelectedPhotos);
-      } else {
-        setSelectedPhotos([...selectedPhotos, photo]);
-      }
+  const handleImageSelected = useCallback(
+    node => {
+      setSelectedPhotos([...selectedPhotos, node]);
     },
     [selectedPhotos],
   );
 
-  const isPhotoSelected = photo => {
-    return selectedPhotos.includes(photo);
-  };
+  const handleImageUnSelected = useCallback(
+    node => {
+      const filteredImages = selectedPhotos.filter(
+        photos => photos.image.filename !== node.image.filename,
+      );
+      setSelectedPhotos([...filteredImages]);
+    },
+    [selectedPhotos],
+  );
 
   const renderheader = () => (
     <View style={styles.headerStyle}>
@@ -55,8 +45,8 @@ function MediaGrid() {
           <ImageItem
             key={item.node.image.filename}
             node={item.node}
-            isSelected={isPhotoSelected(item.node)}
-            onSelected={() => _onSelected(item.node)}
+            onImageSelected={handleImageSelected}
+            onImageUnSelected={handleImageUnSelected}
           />
         ))}
       </View>
@@ -67,11 +57,11 @@ function MediaGrid() {
     ({ item }) => (
       <ImageItem
         node={item.node}
-        isSelected={isPhotoSelected(item.node)}
-        onSelected={() => _onSelected(item.node)}
+        onImageSelected={handleImageSelected}
+        onImageUnSelected={handleImageUnSelected}
       />
     ),
-    [_onSelected],
+    [handleImageSelected, handleImageUnSelected],
   );
 
   const _emptyComponent = () => {
@@ -116,14 +106,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cameraContainer: {
-    width: IMAGE_SIZE,
-    height: IMAGE_SIZE * 2,
+    width: GRID_IMAGE_SIZE,
+    height: GRID_IMAGE_SIZE * 2,
     backgroundColor: '#fff',
   },
   headerImagesRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    width: IMAGE_SIZE * 2,
+    width: GRID_IMAGE_SIZE * 2,
   },
   errorContainer: {
     flex: 1,
