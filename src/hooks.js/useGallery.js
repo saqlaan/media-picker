@@ -1,5 +1,6 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useEffect, useState } from 'react';
+import useGalleryPermissions from './useGalleryPermissions';
 
 const supportedMimeTypesByTheBackEnd = [
   'image/jpeg',
@@ -13,13 +14,15 @@ const supportedMimeTypesByTheBackEnd = [
 function useGallery() {
   const [photos, setphotos] = useState([]);
   const [pagination, setPagination] = useState(null);
+  const { hasPermission } = useGalleryPermissions();
 
   useEffect(() => {
-    loadImages();
-  }, []);
+    if (hasPermission) {
+      loadImages();
+    }
+  }, [hasPermission]);
 
   const loadImages = () => {
-    console.log('Loadiamges');
     CameraRoll.getPhotos({
       first: 20,
       groupTypes: 'All',

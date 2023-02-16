@@ -1,14 +1,23 @@
 import React, { useCallback, useState } from 'react';
-import { FlatList, StyleSheet, View, Dimensions } from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Dimensions,
+  Text,
+  Pressable,
+} from 'react-native';
 import ImageItem from './MediaGridImage';
 import useGallery from '../../hooks.js/useGallery';
 import MediaPickerCamera from './MediaPickerCamera';
+import useGalleryPermissions from '../../hooks.js/useGalleryPermissions';
 
 const IMAGE_SIZE = Dimensions.get('screen').width / 3;
 
 function MediaGrid() {
   const { photos, hasNextPage, loadImages } = useGallery();
   const [selectedPhotos, setSelectedPhotos] = useState([]);
+  const { hasPermission, requestPermission } = useGalleryPermissions();
 
   const _onEndReached = useCallback(() => {
     if (!hasNextPage) {
@@ -29,7 +38,7 @@ function MediaGrid() {
         setSelectedPhotos([...selectedPhotos, photo]);
       }
     },
-    [selectedPhotos]
+    [selectedPhotos],
   );
 
   const isPhotoSelected = photo => {
@@ -65,6 +74,21 @@ function MediaGrid() {
     [_onSelected],
   );
 
+  const _emptyComponent = () => {
+    if (photos.length === 0 && !hasPermission) {
+      return (
+        <View style={styles.errorContainer}>
+          <Pressable onPress={requestPermission}>
+            <Text style={styles.enableButtonText}>
+              Allow app to access gallery
+            </Text>
+          </Pressable>
+        </View>
+      );
+    }
+    return null;
+  };
+
   return (
     <FlatList
       data={photos.slice(4)}
@@ -78,6 +102,7 @@ function MediaGrid() {
       refreshControl={false}
       pinchGestureEnabled={false}
       scrollToOverflowEnabled={false}
+      ListEmptyComponent={_emptyComponent()}
     />
   );
 }
@@ -99,6 +124,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 1,
     width: IMAGE_SIZE * 2,
+  },
+  errorContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 40,
+    paddingHorizontal: 20,
+  },
+  enableButtonText: {
+    color: '#06c',
+    textAlign: 'center',
+    textDecorationLine: 'underline',
   },
 });
 

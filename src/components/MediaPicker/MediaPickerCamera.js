@@ -1,77 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Alert,
-  AppState,
-  Image,
-  Linking,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import { Camera, useCameraDevices } from 'react-native-vision-camera';
+import React from 'react';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Camera } from 'react-native-vision-camera';
 import cameraIcon from '../../assets/icons/camera.png';
+import useCameraPermissions from '../../hooks.js/useCameraPermissions';
 
 function MediaPickerCamera() {
-  const [hasPermission, setHasPermission] = useState(false);
-  const devices = useCameraDevices();
-  const device = devices.back;
-
-  useEffect(() => {
-    checkPermissions();
-  }, [devices]);
-
-  useEffect(() => {
-    AppState.addEventListener('focus', () => {
-      checkPermissions();
-    });
-  }, []);
-
-  const checkPermissions = () => {
-    Camera.getCameraPermissionStatus().then(status => {
-      if (status === 'authorized') {
-        setHasPermission(true);
-      }
-    });
-  };
-
-  const requestPermissions = async () => {
-    Camera.requestCameraPermission()
-      .then(async res => {
-        if (res === 'denied') {
-          Alert.alert(
-            'Camera Permissions',
-            'To use camera you need to enable camera in settings',
-            [
-              {
-                text: 'Goto Settings',
-                onPress: () => Linking.openSettings(),
-              },
-              {
-                text: 'Cancel',
-                onPress: () => null,
-                style: 'cancel',
-              },
-            ],
-          );
-        } else if (res === 'authorized') {
-          setHasPermission(true);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+  const { device, hasPermission, requestPermission } = useCameraPermissions();
 
   const renderWithoutCamera = () => (
     <View style={styles.errorContainer}>
-      <Pressable onPress={requestPermissions}>
+      <Pressable onPress={requestPermission}>
         <Text style={styles.enableButtonText}>Allow Camera</Text>
       </Pressable>
     </View>
   );
 
-  if (hasPermission) {
+  if (hasPermission && device) {
     return (
       <View style={styles.cameraContainer}>
         <Camera
